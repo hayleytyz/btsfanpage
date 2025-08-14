@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-interface MemberCardProps {
+export interface MemberCardProps {
   member: {
     id: number;
     name: string;

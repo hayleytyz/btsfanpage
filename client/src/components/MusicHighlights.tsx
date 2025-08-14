@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { motion } from 'framer-motion';
+// Animation removed to fix TypeScript errors
 import { PlayCircleIcon, PauseCircleIcon } from '@heroicons/react/24/solid';
 
 const albums = [
@@ -130,14 +130,12 @@ const MusicHighlights = () => {
           <h3 className="text-xl font-bold text-white mb-6">More Releases</h3>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
             {albums.map((album) => (
-              <motion.div
+              <div
                 key={album.id}
-                className={`cursor-pointer group ${
+                className={`cursor-pointer group transition-transform duration-300 hover:-translate-y-1 ${
                   currentAlbum.id === album.id ? 'ring-2 ring-bts-pink' : ''
                 } rounded-xl overflow-hidden`}
                 onClick={() => setCurrentAlbum(album)}
-                whileHover={{ y: -5 }}
-                transition={{ type: 'spring', stiffness: 300 }}
               >
                 <div className="aspect-square relative">
                   <img
@@ -153,7 +151,7 @@ const MusicHighlights = () => {
                   <h4 className="font-medium text-white truncate">{album.title}</h4>
                   <p className="text-sm text-gray-400">{album.year} • {album.type}</p>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>

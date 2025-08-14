@@ -6,14 +6,30 @@
       "use": "@vercel/static-build",
       "config": {
         "distDir": "dist",
-        "outputDirectory": "dist"
+        "outputDirectory": "dist",
+        "buildCommand": "npm install --legacy-peer-deps && npm run build",
+        "installCommand": "npm install --legacy-peer-deps"
       }
     }
   ],
   "routes": [
     {
+      "src": "/assets/(.*)",
+      "dest": "/assets/$1"
+    },
+    {
       "src": "/(.*)",
-      "dest": "/index.html"
+      "dest": "/index.html",
+      "status": 200
     }
-  ]
+  ],
+  "build": {
+    "env": {
+      "NODE_VERSION": "18",
+      "NPM_VERSION": "9"
+    }
+  },
+  "env": {
+    "NODE_ENV": "production"
+  }
 }

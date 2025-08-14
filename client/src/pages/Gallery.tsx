@@ -1,4 +1,3 @@
-import { motion } from 'framer-motion';
 import FanGallery from '../components/FanGallery';
 
 const Gallery = () => {
@@ -22,6 +21,10 @@ const Gallery = () => {
           <FanGallery />
         </div>
 
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <FanGallery />
+        </div>
+
         {/* Categories */}
         <div className="mb-12">
           <h2 className="text-2xl font-bold text-white mb-6">Categories</h2>
@@ -32,11 +35,9 @@ const Gallery = () => {
               { name: 'Music Videos', count: 76, image: 'https://i.imgur.com/category3.jpg' },
               { name: 'Behind The Scenes', count: 312, image: 'https://i.imgur.com/category4.jpg' },
             ].map((category) => (
-              <motion.div
+              <div
                 key={category.name}
-                className="relative rounded-xl overflow-hidden h-48 cursor-pointer group"
-                whileHover={{ y: -5 }}
-                transition={{ type: 'spring', stiffness: 300 }}
+                className="relative rounded-xl overflow-hidden h-48 cursor-pointer group hover:-translate-y-1 transition-transform duration-300"
               >
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent z-10"></div>
                 <img
@@ -48,7 +49,7 @@ const Gallery = () => {
                   <h3 className="text-white font-bold text-lg">{category.name}</h3>
                   <p className="text-gray-300 text-sm">{category.count} photos</p>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
