@@ -25,10 +25,10 @@
   ],
   "build": {
     "env": {
-      "NODE_VERSION": "18",
-      "NPM_VERSION": "9"
+      "NODE_VERSION": "18.x"
     }
   },
+  "nodeVersion": "18.x",
   "env": {
     "NODE_ENV": "production"
   }
