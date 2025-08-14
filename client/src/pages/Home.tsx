@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRightIcon } from '@heroicons/react/24/outline';
 import { Tab } from '@headlessui/react';
-import MemberCard from '@/components/MemberCard';
+import MemberCard from '../components/MemberCard';
 
 // Mock data for BTS members
 const members = [
