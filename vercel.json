@@ -7,7 +7,7 @@
       "config": {
         "distDir": "dist",
         "outputDirectory": "dist",
-        "buildCommand": "npm install --legacy-peer-deps && npm run build",
+        "buildCommand": "rm -rf node_modules/.cache && npm install --legacy-peer-deps && npm run build",
         "installCommand": "npm install --legacy-peer-deps"
       }
     }
@@ -25,10 +25,9 @@
   ],
   "build": {
     "env": {
-      "NODE_VERSION": "18.x"
+      "NODE_VERSION": "22.x"
     }
   },
-  "nodeVersion": "18.x",
   "env": {
     "NODE_ENV": "production"
   }
