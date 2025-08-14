@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Search, Heart, Share2, Download } from 'lucide-react';
+import { Heart, Share2, Download } from 'lucide-react';
 
 const GallerySection = () => {
   const galleryItems = [

@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { PlayCircleIcon, PauseCircleIcon, MusicalNoteIcon } from '@heroicons/react/24/solid';
+import { motion } from 'framer-motion';
+import { PlayCircleIcon, PauseCircleIcon } from '@heroicons/react/24/solid';
 
 const albums = [
   {
@@ -45,7 +45,9 @@ const MusicHighlights = () => {
   const [currentTrack, setCurrentTrack] = useState<number | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
-  const playTrack = (trackId: number) => {
+  const playTrack = (trackId: number | undefined) => {
+    if (trackId === undefined) return;
+    
     if (currentTrack === trackId) {
       setIsPlaying(!isPlaying);
     } else {
