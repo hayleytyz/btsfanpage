@@ -1,208 +1,103 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* Base Styles */
 @layer base {
-  :root {
-    --color-bts-purple: 163, 73, 164;
-    --color-bts-lilac: 230, 208, 235;
-    --color-bts-gold: 255, 215, 0;
-    --color-bts-bg-light: 255, 255, 255;
-    --color-bts-bg-dark: 26, 26, 26;
-    --color-bts-text-dark: 51, 51, 51;
-  }
-
   html {
     @apply scroll-smooth;
   }
-
+  
   body {
-    @apply font-sans text-body text-bts-text-dark bg-bts-bg-light dark:bg-bts-bg-dark transition-colors duration-200;
+    @apply font-sans text-bts-dark bg-bts-light text-base leading-relaxed antialiased;
   }
-
+  
   h1, h2, h3, h4, h5, h6 {
-    @apply font-heading text-bts-purple font-bold;
+    @apply font-bold leading-tight tracking-tight;
   }
-
-  h1 { @apply text-h1; }
-  h2 { @apply text-h2; }
-  h3 { @apply text-h3; }
+  
+  h1 {
+    @apply text-5xl md:text-6xl lg:text-7xl;
+  }
+  
+  h2 {
+    @apply text-4xl md:text-5xl;
+  }
+  
+  h3 {
+    @apply text-2xl md:text-3xl;
+  }
+  
+  p {
+    @apply text-lg text-bts-dark/80 leading-relaxed;
+  }
 }
 
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  @apply w-2 h-2;
-}
-
-::-webkit-scrollbar-track {
-  @apply bg-bts-lilac/20 rounded-full;
-}
-
-::-webkit-scrollbar-thumb {
-  @apply bg-bts-purple/50 rounded-full hover:bg-bts-purple/70 transition-colors;
-}
-
-/* Custom selection */
-::selection {
-  @apply bg-bts-purple/20 text-bts-purple;
-}
-
-/* Custom focus styles */
-*:focus-visible {
-  @apply outline-none ring-2 ring-bts-purple ring-offset-2 ring-offset-bts-bg-light dark:ring-offset-bts-bg-dark rounded;
-}
-
-/* Animations */
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-}
-
-.animate-float {
-  animation: float 3s ease-in-out infinite;
-}
-
-/* Custom components */
+/* Components */
 @layer components {
   .btn {
-    @apply inline-flex items-center justify-center px-6 py-3 rounded-xl font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-bts-purple disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply inline-flex items-center justify-center px-8 py-3 text-base font-medium rounded-full transition-all duration-300 ease-in-out;
   }
-
+  
   .btn-primary {
-    @apply bg-gradient-to-r from-bts-purple to-bts-pink text-white shadow-bts hover:shadow-bts-hover hover:-translate-y-0.5;
+    @apply bg-bts-purple text-white hover:bg-opacity-90 hover:shadow-lg transform hover:-translate-y-0.5;
   }
-
-  .btn-secondary {
-    @apply bg-bts-lilac text-bts-purple hover:bg-opacity-90 hover:-translate-y-0.5;
+  
+  .btn-outline {
+    @apply border-2 border-bts-purple text-bts-purple hover:bg-bts-purple hover:bg-opacity-10;
   }
-
-  .card {
-    @apply bg-white dark:bg-bts-bg-dark/50 rounded-xl shadow-bts overflow-hidden transition-all duration-200 hover:shadow-bts-hover hover:-translate-y-1;
+  
+  .section {
+    @apply py-20 md:py-32 relative overflow-hidden;
   }
-
+  
   .container {
-    @apply px-4 mx-auto w-full max-w-7xl;
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
   }
-}
-
-::-webkit-scrollbar-track {
-  background: #1a1a1a;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #9C27B0;
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #E91E63;
-}
-
-/* Base styles */
-body {
-  @apply bg-bts-dark-900 text-white font-sans antialiased;
-  font-family: 'Inter', sans-serif;
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-}
-
-/* Custom utility classes */
-.bg-bts-gradient {
-  @apply bg-gradient-to-r from-bts-pink to-bts-purple;
-}
-
-.text-bts-gradient {
-  @apply text-transparent bg-clip-text bg-gradient-to-r from-bts-pink to-bts-purple;
 }
 
 /* Animations */
-@keyframes float {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
-  100% { transform: translateY(0px); }
+.animate-fade-in {
+  animation: fadeIn 1s ease-out forwards;
 }
 
-.animate-float {
-  animation: float 3s ease-in-out infinite;
+.animate-slide-up {
+  animation: slideUp 0.8s ease-out forwards;
 }
 
-/* Custom components */
-.btn {
-  @apply px-6 py-2 rounded-md font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-bts-pink;
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
-.btn-primary {
-  @apply btn bg-gradient-to-r from-bts-pink to-bts-purple text-white hover:opacity-90;
-}
-
-.btn-secondary {
-  @apply btn bg-bts-dark-700 text-white hover:bg-bts-dark-600;
-}
-
-/* Card styles */
-.card {
-  @apply bg-bts-dark-800 rounded-lg shadow-lg overflow-hidden transition-all duration-200 hover:shadow-bts;
-}
-
-/* Form elements */
-.input {
-  @apply w-full px-4 py-2 bg-bts-dark-700 border border-bts-dark-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-bts-pink focus:border-transparent;
-}
-
-/* Responsive adjustments */
-@screen md {
-  .container {
-    @apply px-6;
+@keyframes slideUp {
+  from { 
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
+::-webkit-scrollbar-track {
+  @apply bg-bts-light;
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+::-webkit-scrollbar-thumb {
+  @apply bg-bts-purple/30 rounded-full hover:bg-bts-purple/50;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+/* Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
 }

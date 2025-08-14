@@ -1,184 +1,119 @@
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { PlayCircleIcon, UserGroupIcon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { ArrowRight, Play } from 'lucide-react';
 
-const slides = [
-  {
-    id: 1,
-    image: 'https://images.unsplash.com/photo-1604514628550-37477afdf9e3?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-    title: 'Discover BTS.',
-    subtitle: 'Join the ARMY.',
-    description: 'Your ultimate hub for music, updates, and fan stories. Connect with millions of ARMY members worldwide and experience the BTS journey like never before.'
-  },
-  {
-    id: 2,
-    image: 'https://images.unsplash.com/photo-1517457373958-b7bdd4587205?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-    title: 'Latest Album',
-    subtitle: 'Proof',
-    description: 'Experience the anthology album that celebrates BTS\'s journey with new tracks and greatest hits.'
-  },
-  {
-    id: 3,
-    image: 'https://images.unsplash.com/photo-1608889825271-969628360141?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-    title: 'World Tour',
-    subtitle: 'PTD On Stage',
-    description: 'Relive the magic of BTS\'s Permission to Dance On Stage world tour with exclusive content and highlights.'
-  }
-];
-
-const Hero = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [isHovered, setIsHovered] = useState(false);
-
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
-  };
-
-  const prevSlide = () => {
-    setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
-  };
-
-  const goToSlide = (index: number) => {
-    setCurrentSlide(index);
-  };
-
-  // Auto-advance slides
-  useEffect(() => {
-    if (!isHovered) {
-      const timer = setTimeout(() => {
-        nextSlide();
-      }, 8000);
-      return () => clearTimeout(timer);
-    }
-  }, [currentSlide, isHovered]);
-
+export default function Hero() {
   return (
-    <section 
-      className="relative h-screen flex items-center overflow-hidden"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      aria-label="BTS Hero Carousel"
-    >
-      <AnimatePresence mode="wait">
-        {slides.map((slide, index) => (
-          currentSlide === index && (
-            <motion.div
-              key={slide.id}
-              className="absolute inset-0 z-0"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.8 }}
-            >
-              <div className="absolute inset-0 bg-gradient-to-t from-bts-dark to-transparent opacity-90 z-10"></div>
-              <div className="absolute inset-0 bg-gradient-to-r from-bts-purple/30 to-bts-pink/30 z-10"></div>
-              <div 
-                className="w-full h-full bg-cover bg-center transition-transform duration-1000 ease-in-out transform scale-100 hover:scale-105"
-                style={{
-                  backgroundImage: `url(${slide.image})`,
-                }}
-                aria-hidden="true"
-              ></div>
-            </motion.div>
-          )
-        ))}
-      </AnimatePresence>
-
-      {/* Navigation Arrows */}
-      <button 
-        onClick={prevSlide}
-        className="absolute left-4 z-30 p-3 rounded-full bg-black/30 text-white hover:bg-black/50 transition-colors focus:outline-none focus:ring-2 focus:ring-white/50"
-        aria-label="Previous slide"
-      >
-        <ChevronLeftIcon className="h-6 w-6" />
-      </button>
-      
-      <button 
-        onClick={nextSlide}
-        className="absolute right-4 z-30 p-3 rounded-full bg-black/30 text-white hover:bg-black/50 transition-colors focus:outline-none focus:ring-2 focus:ring-white/50"
-        aria-label="Next slide"
-      >
-        <ChevronRightIcon className="h-6 w-6" />
-      </button>
-
-      {/* Content */}
-      <div className="container mx-auto px-4 z-20 relative">
-        <AnimatePresence mode="wait">
-          {slides.map((slide, index) => (
-            currentSlide === index && (
-              <motion.div
-                key={slide.id}
-                className="max-w-3xl"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.5 }}
-              >
-                <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
-                  {slide.title}<br />
-                  <span className="bg-gradient-to-r from-bts-pink to-bts-purple bg-clip-text text-transparent">
-                    {slide.subtitle}
-                  </span>
-                </h1>
-                <p className="text-xl text-gray-200 mb-10 max-w-2xl">
-                  {slide.description}
-                </p>
-                <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-6">
-                  <Link
-                    to="/about"
-                    className="inline-flex items-center justify-center px-8 py-4 rounded-full bg-gradient-to-r from-bts-pink to-bts-purple text-white font-medium text-lg hover:opacity-90 transition-opacity shadow-lg shadow-bts-pink/30 hover:shadow-bts-purple/50"
-                  >
-                    <PlayCircleIcon className="h-6 w-6 mr-2" />
-                    Learn More
-                  </Link>
-                  <Link
-                    to="/community"
-                    className="inline-flex items-center justify-center px-8 py-4 rounded-full bg-transparent border-2 border-white text-white font-medium text-lg hover:bg-white/10 transition-colors"
-                  >
-                    <UserGroupIcon className="h-6 w-6 mr-2" />
-                    Join Community
-                  </Link>
-                </div>
-              </motion.div>
-            )
-          ))}
-        </AnimatePresence>
+    <section className="relative h-screen flex items-center overflow-hidden bg-bts-dark">
+      {/* Background Image */}
+      <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 bg-gradient-to-t from-bts-dark via-bts-dark/90 to-bts-dark/80" />
+        <div className="absolute inset-0 bg-gradient-to-r from-bts-dark via-bts-dark/60 to-transparent" />
+        <div 
+          className="w-full h-full bg-cover bg-center opacity-20"
+          style={{ backgroundImage: 'url(/images/hero-bg.jpg)' }}
+        />
       </div>
 
-      {/* Slide Indicators */}
-      <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-30 flex space-x-2">
-        {slides.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => goToSlide(index)}
-            className={`h-2 w-2 rounded-full transition-all duration-300 ${currentSlide === index ? 'bg-white w-8' : 'bg-white/50 w-2'}`}
-            aria-label={`Go to slide ${index + 1}`}
-          />
-        ))}
-      </div>
-
-      {/* Scroll Indicator */}
-      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-30">
-        <div className="animate-bounce">
-          <svg
-            className="h-6 w-6 text-white/80"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            aria-hidden="true"
+      <div className="container mx-auto px-6 relative z-10 pt-20">
+        <div className="max-w-4xl mx-auto text-center md:text-left">
+          {/* Badge */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="inline-flex items-center px-4 py-2 rounded-full bg-bts-purple/10 text-bts-purple text-sm font-medium mb-6"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M19 14l-7 7m0 0l-7-7m7 7V3"
-            />
-          </svg>
+            <span className="relative flex h-3 w-3 mr-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-bts-purple opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-bts-purple"></span>
+            </span>
+            New Album: Proof - Out Now
+          </motion.div>
+
+          {/* Main Heading */}
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-6 leading-tight"
+          >
+            BTS
+            <span className="block text-bts-purple mt-2">Beyond The Scene</span>
+          </motion.h1>
+
+          {/* Subheading */}
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="text-xl text-bts-light/80 mb-10 max-w-2xl mx-auto md:mx-0"
+          >
+            Experience the magic of BTS through their music, message, and journey with ARMY.
+          </motion.p>
+
+          {/* CTA Buttons */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.5 }}
+            className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start"
+          >
+            <a
+              href="#music"
+              className="group relative inline-flex items-center justify-center px-8 py-4 bg-bts-purple text-white rounded-full font-medium overflow-hidden transition-all duration-300 hover:bg-opacity-90 hover:shadow-lg hover:shadow-bts-purple/30"
+            >
+              <span className="relative z-10 flex items-center">
+                Explore Music
+                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </span>
+              <span className="absolute inset-0 bg-gradient-to-r from-bts-purple to-bts-pink opacity-0 group-hover:opacity-100 transition-opacity"></span>
+            </a>
+            
+            <a
+              href="#latest-video"
+              className="group relative inline-flex items-center justify-center px-8 py-4 bg-transparent text-white border-2 border-white/20 rounded-full font-medium overflow-hidden transition-all duration-300 hover:bg-white/10 hover:border-white/30"
+            >
+              <span className="relative z-10 flex items-center">
+                <Play className="w-5 h-5 mr-2" fill="currentColor" />
+                Watch Latest MV
+              </span>
+            </a>
+          </motion.div>
         </div>
+
+        {/* Stats */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.6 }}
+          className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto text-center"
+        >
+          {[
+            { value: '100M+', label: 'Monthly Listeners' },
+            { value: '50B+', label: 'Streams' },
+            { value: '200+', label: 'Awards' },
+            { value: '#1', label: 'Billboard Hot 100' },
+          ].map((stat, i) => (
+            <div key={i} className="p-6 rounded-2xl bg-white/5 backdrop-blur-sm">
+              <div className="text-3xl font-bold text-bts-purple mb-1">{stat.value}</div>
+              <div className="text-sm text-bts-light/70">{stat.label}</div>
+            </div>
+          ))}
+        </motion.div>
+
+        {/* Scroll Indicator */}
+        <motion.div 
+          className="absolute bottom-10 left-1/2 transform -translate-x-1/2 hidden md:block"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1 }}
+        >
+          <div className="flex flex-col items-center">
+            <span className="text-sm text-bts-light/50 mb-2">Scroll to explore</span>
+            <div className="w-px h-12 bg-gradient-to-b from-bts-purple to-transparent"></div>
+          </div>
+        </motion.div>
       </div>
     </section>
   );
-};
-
-export default Hero;
+}

@@ -19,4 +19,7 @@ export default defineConfig({
     assetsDir: 'assets',
     sourcemap: true,
   },
+  optimizeDeps: {
+    include: ['@heroicons/react']
+  }
 })

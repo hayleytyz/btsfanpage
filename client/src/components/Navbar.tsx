@@ -1,31 +1,24 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Search, User, Heart, ShoppingBag } from 'lucide-react';
-import ThemeToggle from './ThemeToggle';
+import type { Variants } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
+import { Menu, X } from 'lucide-react';
 
 interface NavItem {
   name: string;
-  href: string;
-  icon?: React.ReactNode;
+  path: string;
 }
-
-const navigation: NavItem[] = [
-  { name: 'Home', href: '/' },
-  { name: 'Music', href: '/music' },
-  { name: 'Videos', href: '/videos' },
-  { name: 'Gallery', href: '/gallery' },
-  { name: 'News', href: '/news' },
-  { name: 'Tour', href: '/tour' },
-  { name: 'Shop', href: '/shop', icon: <ShoppingBag className="w-5 h-5" /> },
-];
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
+  const { ref, inView } = useInView({
+    threshold: 0.1,
+    triggerOnce: false,
+  });
 
-  // Handle scroll effect
   useEffect(() => {
     const handleScroll = () => {
       const isScrolled = window.scrollY > 10;
@@ -38,104 +31,88 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [scrolled]);
 
-  // Close mobile menu when route changes
-  useEffect(() => {
-    setIsOpen(false);
-  }, [location.pathname]);
+  const navItems: NavItem[] = [
+    { name: 'Home', path: '/' },
+    { name: 'Music', path: '/music' },
+    { name: 'Gallery', path: '/gallery' },
+    { name: 'News', path: '/news' },
+    { name: 'About', path: '/about' },
+  ];
 
-  // Animation variants for mobile menu
-  const mobileMenuVariants = {
+  const containerVariants: Variants = {
     hidden: { opacity: 0, y: -20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: 'spring',
+        stiffness: 100,
+        damping: 20,
+      },
+    },
+  };
+
+  const itemVariants: Variants = {
+    hidden: { opacity: 0, y: -10 },
     visible: (i: number) => ({
       opacity: 1,
       y: 0,
       transition: {
-        delay: i * 0.1,
-        duration: 0.3,
-        ease: [0.16, 1, 0.3, 1] as any, // Using any to bypass the Easing type issue
+        delay: 0.1 * i,
+        type: 'spring',
+        stiffness: 100,
       },
     }),
-  } as const;
+  };
 
   return (
-    <header 
-      className={`fixed w-full z-50 transition-all duration-500 ${
-        scrolled 
-          ? 'bg-bts-dark/95 backdrop-blur-md shadow-bts-lg py-2' 
-          : 'bg-transparent py-4'
+    <motion.header
+      ref={ref}
+      initial="hidden"
+      animate={inView ? 'visible' : 'hidden'}
+      variants={containerVariants}
+      className={`fixed w-full z-50 transition-all duration-300 ${
+        scrolled ? 'bg-white/90 backdrop-blur-md shadow-sm' : 'bg-transparent'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+      <nav className="container mx-auto px-6 py-4">
+        <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link 
-            to="/" 
-            className="flex-shrink-0 group relative"
+          <motion.div
+            custom={0}
+            variants={itemVariants}
+            className="flex-shrink-0"
           >
-            <motion.span 
-              className="text-3xl font-black bg-gradient-to-r from-bts-pink via-bts-purple to-bts-gold bg-clip-text text-transparent"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              BTS
-              <span className="text-white">ARMY</span>
-            </motion.span>
-            <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-bts-pink to-bts-purple group-hover:w-full transition-all duration-300"></span>
-          </Link>
+            <Link to="/" className="flex items-center space-x-2">
+              <span className="text-2xl font-bold text-bts-dark">BTS</span>
+              <span className="text-sm font-medium text-bts-purple">ARMY</span>
+            </Link>
+          </motion.div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-1 ml-10">
-            {navigation.map((item) => (
-              <motion.div
-                key={item.name}
-                whileHover={{ y: -2 }}
-                whileTap={{ scale: 0.95 }}
-              >
+          <div className="hidden md:flex items-center space-x-1">
+            {navItems.map((item, i) => (
+              <motion.div key={item.name} custom={i + 1} variants={itemVariants}>
                 <Link
-                  to={item.href}
-                  className={`relative px-4 py-2 text-sm font-medium transition-all duration-300 flex items-center space-x-1 ${
-                    location.pathname === item.href
-                      ? 'text-white'
-                      : 'text-gray-300 hover:text-white'
+                  to={item.path}
+                  className={`px-4 py-2 text-sm font-medium rounded-full transition-colors ${
+                    location.pathname === item.path
+                      ? 'text-bts-purple bg-bts-purple/10'
+                      : 'text-bts-dark/80 hover:text-bts-purple hover:bg-bts-purple/5'
                   }`}
                 >
-                  {item.icon && <span className="mr-1">{item.icon}</span>}
-                  <span>{item.name}</span>
-                  {location.pathname === item.href && (
-                    <motion.span 
-                      className="absolute bottom-0 left-1/2 w-6 h-0.5 bg-gradient-to-r from-bts-pink to-bts-purple -translate-x-1/2"
-                      layoutId="activeNav"
-                      transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-                    />
-                  )}
+                  {item.name}
                 </Link>
               </motion.div>
             ))}
-          </nav>
-
-          {/* Desktop Actions */}
-          <div className="hidden lg:flex items-center space-x-4">
-            <button 
-              className="p-2 text-gray-300 hover:text-white transition-colors"
-              aria-label="Search"
-            >
-              <Search className="w-5 h-5" />
-            </button>
-            <button 
-              className="p-2 text-gray-300 hover:text-white transition-colors relative"
-              aria-label="Wishlist"
-            >
-              <Heart className="w-5 h-5" />
-              <span className="absolute -top-1 -right-1 bg-bts-pink text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">3</span>
-            </button>
-            <ThemeToggle />
             <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              custom={navItems.length + 1}
+              variants={itemVariants}
+              className="ml-2"
             >
               <Link
-                to="/login"
-                className="ml-2 px-4 py-2 bg-gradient-to-r from-bts-pink to-bts-purple text-white text-sm font-semibold rounded-full hover:opacity-90 transition-opacity shadow-lg shadow-bts-pink/20"
+                to="/join"
+                className="inline-flex items-center px-4 py-2 text-sm font-medium rounded-full bg-bts-purple text-white hover:bg-opacity-90 transition-colors"
               >
                 Join ARMY
               </Link>
@@ -143,83 +120,63 @@ const Navbar = () => {
           </div>
 
           {/* Mobile menu button */}
-          <div className="lg:hidden flex items-center space-x-3">
-            <button 
-              className="p-2 text-gray-300 hover:text-white transition-colors"
-              aria-label="Search"
-            >
-              <Search className="w-5 h-5" />
-            </button>
-            <ThemeToggle />
+          <motion.div
+            custom={navItems.length + 1}
+            variants={itemVariants}
+            className="md:hidden"
+          >
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="p-2 rounded-md text-gray-300 hover:text-white hover:bg-bts-dark-700 focus:outline-none transition-colors"
-              aria-expanded={isOpen}
-              aria-label={isOpen ? 'Close menu' : 'Open menu'}
+              className="p-2 rounded-full hover:bg-bts-purple/10 text-bts-dark/80 hover:text-bts-purple transition-colors"
+              aria-label="Toggle menu"
             >
               {isOpen ? (
-                <X className="block h-6 w-6" aria-hidden="true" />
+                <X className="w-5 h-5" />
               ) : (
-                <Menu className="block h-6 w-6" aria-hidden="true" />
+                <Menu className="w-5 h-5" />
               )}
             </button>
-          </div>
+          </motion.div>
         </div>
-      </div>
 
-      {/* Mobile menu */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div 
-            className="lg:hidden bg-bts-dark-900/95 backdrop-blur-md overflow-hidden"
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3, ease: 'easeInOut' }}
-          >
-            <div className="px-2 pt-2 pb-3 space-y-1">
-              {navigation.map((item, index) => (
-                <motion.div
-                  key={item.name}
-                  custom={index}
-                  initial="hidden"
-                  animate="visible"
-                  variants={mobileMenuVariants}
-                >
+        {/* Mobile Navigation */}
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              className="md:hidden overflow-hidden"
+            >
+              <div className="pt-4 pb-2 space-y-1">
+                {navItems.map((item) => (
                   <Link
-                    to={item.href}
-                    className={`flex items-center px-3 py-3 rounded-lg text-base font-medium ${
-                      location.pathname === item.href
-                        ? 'bg-bts-dark-700 text-white'
-                        : 'text-gray-300 hover:bg-bts-dark-700 hover:text-white'
+                    key={item.name}
+                    to={item.path}
+                    className={`block px-4 py-3 rounded-lg text-base font-medium ${
+                      location.pathname === item.path
+                        ? 'bg-bts-purple/10 text-bts-purple'
+                        : 'text-bts-dark/80 hover:bg-bts-purple/5'
                     }`}
+                    onClick={() => setIsOpen(false)}
                   >
-                    {item.icon && <span className="mr-2">{item.icon}</span>}
                     {item.name}
                   </Link>
-                </motion.div>
-              ))}
-              
-              <motion.div 
-                className="pt-2"
-                custom={navigation.length}
-                initial="hidden"
-                animate="visible"
-                variants={mobileMenuVariants}
-              >
+                ))}
                 <Link
-                  to="/login"
-                  className="mt-2 w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-full shadow-sm text-base font-medium text-white bg-gradient-to-r from-bts-pink to-bts-purple hover:opacity-90"
+                  to="/join"
+                  className="block w-full mt-4 px-4 py-3 text-center rounded-lg bg-bts-purple text-white hover:bg-opacity-90 transition-colors"
+                  onClick={() => setIsOpen(false)}
                 >
-                  <User className="w-4 h-4 mr-2" />
-                  Login / Join ARMY
+                  Join ARMY
                 </Link>
-              </motion.div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </header>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </nav>
+    </motion.header>
   );
 };
 
