@@ -6,18 +6,10 @@
     "vercel-build": "cd client && npm install && npm run build"
   },
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=16.0.0",
+    "npm": ">=7.0.0"
   },
   "workspaces": [
     "client"
-  ],
-  "builds": [
-    {
-      "src": "client/package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "dist"
-      }
-    }
   ]
 }
