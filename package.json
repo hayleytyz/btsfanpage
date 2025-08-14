@@ -11,5 +11,8 @@
   },
   "workspaces": [
     "client"
-  ]
+  ],
+  "dependencies": {
+    "@vercel/static-build": "^1.3.47"
+  }
 }
