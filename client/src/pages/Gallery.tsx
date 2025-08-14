@@ -1,6 +1,4 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { XMarkIcon, ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/24/solid';
+import { motion } from 'framer-motion';
 import FanGallery from '../components/FanGallery';
 
 const Gallery = () => {
@@ -33,7 +31,7 @@ const Gallery = () => {
               { name: 'Award Shows', count: 189, image: 'https://i.imgur.com/category2.jpg' },
               { name: 'Music Videos', count: 76, image: 'https://i.imgur.com/category3.jpg' },
               { name: 'Behind The Scenes', count: 312, image: 'https://i.imgur.com/category4.jpg' },
-            ].map((category, index) => (
+            ].map((category) => (
               <motion.div
                 key={category.name}
                 className="relative rounded-xl overflow-hidden h-48 cursor-pointer group"

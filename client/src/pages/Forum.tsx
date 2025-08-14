@@ -1,7 +1,27 @@
 import { useState } from 'react';
 import { Tab } from '@headlessui/react';
-import { ChatBubbleLeftRightIcon, FireIcon, ClockIcon, UserGroupIcon, HeartIcon, ChatBubbleLeftIcon, ShareIcon, BookmarkIcon, EllipsisHorizontalIcon } from '@heroicons/react/24/outline';
+import { FireIcon, ClockIcon, UserGroupIcon, HeartIcon, ChatBubbleLeftIcon, ShareIcon, BookmarkIcon, EllipsisHorizontalIcon } from '@heroicons/react/24/outline';
 import { HeartIcon as HeartIconSolid, BookmarkIcon as BookmarkIconSolid } from '@heroicons/react/24/solid';
+
+interface User {
+  name: string;
+  avatar: string;
+  role: string;
+}
+
+interface Post {
+  id: number;
+  user: User;
+  content: string;
+  timestamp: string;
+  likes: number;
+  comments: number;
+  shares: number;
+  isLiked: boolean;
+  isBookmarked: boolean;
+  tags: string[];
+  image?: string;
+}
 
 // Mock data for forum posts
 const mockPosts = [
@@ -57,9 +77,9 @@ const mockPosts = [
 ];
 
 const Forum = () => {
-  const [posts, setPosts] = useState(mockPosts);
-  const [newPost, setNewPost] = useState('');
   const [selectedTab, setSelectedTab] = useState(0);
+  const [posts, setPosts] = useState<Post[]>(mockPosts);
+  const [newPost, setNewPost] = useState('');
 
   const handleLike = (postId: number) => {
     setPosts(posts.map(post => 
@@ -185,7 +205,7 @@ const Forum = () => {
         <div className="mb-6">
           <Tab.Group selectedIndex={selectedTab} onChange={setSelectedTab}>
             <Tab.List className="flex space-x-1 rounded-xl bg-bts-dark-800 p-1">
-              {tabs.map((tab, index) => (
+              {tabs.map((tab) => (
                 <Tab
                   key={tab.name}
                   className={({ selected }) =>
